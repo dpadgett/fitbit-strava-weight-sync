@@ -36,8 +36,10 @@ print ''
 #print 'Got it'
 #print args
 
-with open('/tmp/body.json', 'w') as f:
-  f.write(sys.stdin.read())
+body = sys.stdin.read()
+if body != '':
+  with open('/tmp/body.json', 'w') as f:
+    f.write(body)
 
 ssl._https_verify_certificates(enable=False)
 
@@ -45,7 +47,7 @@ def fetch_new_access_token(creds):
   url = "https://api.fitbit.com/oauth2/token"
   headers = {"Authorization": "Basic " + creds['basic_auth']}
   print 'Requesting: ' + url
-  req = urllib2.Request(url, headers=headers, data={'grant_type': 'refresh_token', 'refresh_token': creds['refresh_token']})
+  req = urllib2.Request(url, headers=headers, data=urllib.urlencode({'grant_type': 'refresh_token', 'refresh_token': creds['refresh_token']}))
   response = urllib2.urlopen(req)
   the_page = response.read()
   print 'Response code: ', response.getcode()
