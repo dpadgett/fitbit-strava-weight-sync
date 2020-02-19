@@ -36,6 +36,9 @@ print ''
 #print 'Got it'
 #print args
 
+if os.environ['REQUEST_METHOD'] != 'POST':
+  exit()
+
 body = sys.stdin.read()
 if body != '':
   with open('/tmp/body.json', 'w') as f:
